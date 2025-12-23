@@ -19,7 +19,7 @@
       .backface-hidden { backface-visibility: hidden; }
       .rotate-y-180 { transform: rotateY(180deg); }
       
-      /* ✅ 严守 V8 布局：从上往下排，不做任何改动 */
+      /* 保持 V8/V12 布局：从上往下排 */
       .main-layout { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 5vh; gap: 1.5rem; }
       
       /* 卡牌容器 */
@@ -56,7 +56,7 @@
         Rotate: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       };
 
-     /// 📝 50条精选文案库 (如果API不工作，自动从这里抽)
+      /// 📝 50条精选文案库 (如果API不工作，自动从这里抽)
       const STATIC_CARDS = [
         { title: "拒绝内耗", wisdom: "停止批判自己，你已经做得很好了。", action: "深呼吸三次，说“我放过自己”" },
         { title: "允许发生", wisdom: "允许一切如其所是，然后穿过它。", action: "对一件烦心事耸耸肩 然后去解决" },
@@ -126,13 +126,14 @@
         return (
           <div style={style} className="perspective-1000" onClick={() => state === 'spread' && onClick(id)}>
             <div className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
-              <div className={`absolute w-full h-full backface-hidden rounded-[24px] border-4 border-white shadow-xl ${theme.bg} flex flex-col items-center justify-center`}>
+              <div className={`absolute w-full h-full backface-hidden rounded-[24px] border-4 border-white shadow-xl ${theme.bg} flex flex-col items-center justify-center relative overflow-hidden`}>
+                {/* ✅ V13微调：把仙女从离谱的 -right-10 拉回到 -right-2，刚好挂在眼角，不挡字 */}
+                <span className="absolute -top-2 -right-2 text-4xl filter drop-shadow-lg z-10 fairy-fly">🧚‍♀️</span>
+                
                 <div className="relative w-24 h-24 mb-5 flex items-center justify-center">
-                     {/* ✅ V12微调：只改这里！把 -right-3 改成了 -right-10，让仙女往右移，不挡字 */}
-                     <span className="absolute -top-6 -right-10 text-4xl filter drop-shadow-lg z-10 fairy-fly">🧚‍♀️</span>
                     <div className="w-full h-full bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white shadow-inner"><Icons.Cloud /></div>
                 </div>
-                <div className="pop-font text-white text-3xl font-bold tracking-widest drop-shadow-md">GROWTH</div>
+                <div className="pop-font text-white text-3xl font-bold tracking-widest drop-shadow-md z-20">GROWTH</div>
               </div>
               <div className="absolute w-full h-full backface-hidden rotate-y-180 rounded-[24px] bg-white border-4 border-white shadow-xl flex flex-col overflow-hidden">
                 <div className={`flex-1 ${theme.bg} p-6 flex flex-col items-center justify-center text-center relative`}>
