@@ -18,12 +18,8 @@
       .transform-style-3d { transform-style: preserve-3d; }
       .backface-hidden { backface-visibility: hidden; }
       .rotate-y-180 { transform: rotateY(180deg); }
-      
-      /* V6修正：整体向上提，gap缩小，让卡牌显示更完整 */
-      .main-layout { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 8vh; gap: 1.5rem; }
-      /* 卡牌容器下边距减小 */
-      .card-stage { position: relative; width: 80vw; max-width: 300px; aspect-ratio: 3/4.5; z-index: 10; flex-shrink: 0; }
-      
+      .main-layout { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 5vh; gap: 1.5rem; }
+      .card-stage { position: relative; width: 80vw; max-width: 260px; aspect-ratio: 3/4.5; z-index: 10; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
       @keyframes float { 0%, 100% { transform: translateY(0px) rotate(5deg); } 50% { transform: translateY(-8px) rotate(-5deg); } }
       .fairy-fly { animation: float 3s ease-in-out infinite; }
     </style>
@@ -39,13 +35,13 @@
       // 👇👇👇 记得在这里填入你的 Key (保留双引号) 👇👇👇
       const YOUR_API_KEY = "AIzaSyBAvDfnYtzXmeeycna88DN8YRIHBWcP_4Q";
 
-      // 🌈 V6新增：颜色能量定义
+      // 🌈 V8修改：全新的双行文案结构
       const COLOR_MEANINGS = {
-          "bg-pink-400": "💖 Wooo！你抽到了粉色！是温柔的【桃花与人缘】能量！",
-          "bg-purple-400": "🔮 Wooo！你抽到了紫色！是神秘的【直觉与灵感】能量！",
-          "bg-sky-400": "💧 Wooo！你抽到了蓝色！是清澈的【智慧与冷静】能量！",
-          "bg-lime-400": "🌿 Wooo！你抽到了青色！是生机的【治愈与生长】能量！",
-          "bg-yellow-400": "✨ Wooo！你抽到了黄色！是闪耀的【自信与创造】能量！"
+          "bg-pink-400": ["Wooo！你抽到粉色欸！代表【桃花与人缘】", "今天的给人家是 温柔 的感觉 💖"],
+          "bg-purple-400": ["Wooo！你抽到紫色欸！代表【直觉与灵感】", "今天的给人家是 神秘 的感觉 🔮"],
+          "bg-sky-400": ["Wooo！你抽到蓝色欸！代表【智慧与冷静】", "今天的给人家是 清澈 的感觉 💧"],
+          "bg-lime-400": ["Wooo！你抽到青色欸！代表【治愈与生长】", "今天的给人家是 生机满满 的感觉 🌿"],
+          "bg-yellow-400": ["Wooo！你抽到黄色欸！代表【自信与创造】", "今天的给人家是 闪耀 的感觉 ✨"]
       };
 
       const Icons = {
@@ -56,8 +52,6 @@
       };
 
       const STATIC_CARDS = [{ title: "好运加满", wisdom: "宇宙接收到了你的信号。", action: "给自己买束花", themeColor: "#F472B6" }];
-
-      // 主题定义移到外部
       const THEMES = [ { bg: "bg-pink-400", text: "text-white" }, { bg: "bg-yellow-400", text: "text-pink-600" }, { bg: "bg-sky-400", text: "text-white" }, { bg: "bg-purple-400", text: "text-white" }, { bg: "bg-lime-400", text: "text-purple-600" } ];
 
       const Card = ({ id, index, totalCards, state, isFlipped, content, onClick }) => {
@@ -68,7 +62,7 @@
           else if (state === 'spread') { const angle = (index - totalCards/2) * 6; const x = (index - totalCards/2) * 12; transform = `translate(${x}px, 0) rotate(${angle}deg)`; }
           else if (state === 'selected') { transform = `scale(1.05) rotate(0deg)`; zIndex = 1000; }
           else if (state === 'hidden') transform = `translate(0, 150vh)`;
-          return { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', transform, zIndex, transition: 'all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)', cursor: state === 'spread' ? 'pointer' : 'default' };
+          return { position: 'absolute', top: 'auto', left: 'auto', width: '100%', height: '100%', transform, zIndex, transition: 'all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)', cursor: state === 'spread' ? 'pointer' : 'default' };
         }, [state, index, totalCards, id]);
 
         return (
@@ -105,7 +99,6 @@
         const [deckState, setDeckState] = useState('intro');
         const [selectedId, setSelectedId] = useState(null);
         const [cardContent, setCardContent] = useState(null);
-        // V6新增：记录抽到的颜色
         const [selectedColorTheme, setSelectedColorTheme] = useState(null);
 
         const fetchAIContent = async () => {
@@ -121,10 +114,8 @@
         const startDeck = () => setDeckState('spread');
         const pickCard = async (id) => {
             setSelectedId(id);
-            // V6新增：计算并记录抽到的颜色
             const themeBg = THEMES[id % THEMES.length].bg;
             setSelectedColorTheme(themeBg);
-            
             setDeckState('selected');
             const content = await fetchAIContent();
             setCardContent(content);
@@ -136,7 +127,6 @@
           <div className="main-layout">
             <div className="absolute top-[-10%] right-[-10%] w-[300px] h-[300px] bg-white/20 rounded-full blur-[80px] pointer-events-none" />
             
-            {/* 标题和文案区域 */}
             <div className={`transition-all duration-700 flex flex-col items-center z-20 ${deckState === 'intro' ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'} flex-shrink-0`}>
                 <h1 className="text-6xl md:text-8xl font-bold pop-font text-white drop-shadow-md mb-2">Growth<br/>Daily</h1>
                 <div className="bg-white/20 backdrop-blur-md px-6 py-4 rounded-2xl text-white font-bold mb-4 text-base md:text-lg border-2 border-white/40 shadow-xl max-w-[90vw] leading-relaxed text-center">
@@ -149,16 +139,17 @@
                 </button>
             </div>
 
-            {/* V6新增：色彩能量解读区域 (只在揭晓时显示) */}
-            <div className={`transition-all duration-700 flex flex-col items-center z-20 ${deckState === 'revealed' ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'} flex-shrink-0 h-24 justify-end`}>
+            {/* V8修改：支持双行文案显示，增加间距和样式区分 */}
+            <div className={`transition-all duration-700 flex flex-col items-center z-20 ${deckState === 'revealed' ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'} flex-shrink-0 min-h-[6rem] justify-end`}>
                  {selectedColorTheme && COLOR_MEANINGS[selectedColorTheme] && (
-                   <div className="bg-white/20 backdrop-blur-md px-4 py-3 rounded-2xl text-white font-bold text-base md:text-lg border-2 border-white/40 shadow-xl text-center animate-in fade-in zoom-in duration-500">
-                      {COLOR_MEANINGS[selectedColorTheme]}
+                   <div className="bg-white/20 backdrop-blur-md px-6 py-4 rounded-2xl text-white font-bold border-2 border-white/40 shadow-xl text-center animate-in fade-in zoom-in duration-500 leading-relaxed flex flex-col gap-1">
+                      <p className="text-lg md:text-xl">{COLOR_MEANINGS[selectedColorTheme][0]}</p>
+                      <p className="text-sm md:text-base opacity-90 font-medium">{COLOR_MEANINGS[selectedColorTheme][1]}</p>
                    </div>
                  )}
             </div>
 
-            <div className="card-stage flex items-center justify-center">
+            <div className="card-stage">
                 {Array.from({length: 15}).map((_, i) => (
                     <Card key={i} id={i} index={i} totalCards={15} state={deckState === 'revealed' && selectedId === i ? 'selected' : (deckState === 'revealed' && selectedId !== i ? 'hidden' : deckState)} isFlipped={deckState === 'revealed' && selectedId === i} content={cardContent} onClick={pickCard}/>
                 ))}
