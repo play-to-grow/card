@@ -117,7 +117,7 @@
         const style = useMemo(() => {
           let transform = ''; let zIndex = index;
           if (state === 'stacked') transform = `rotate(${(id % 5) - 2}deg) translateY(${-index * 0.5}px)`;
-          else if (state === 'spread') { const angle = (index - totalCards/2) * 6; const x = (index - totalCards/2) * 12; transform = `translate(${x}px, 0) rotate(${angle}deg)`; }
+          else if (state === 'spread') { const angle = (index - totalCards/2) * 6; const x = (index - totalCards/2) * 12; transform = `translate(${x}px,50) rotate(${angle}deg)`; }
           else if (state === 'selected') { transform = `scale(1.05) rotate(0deg)`; zIndex = 1000; }
           else if (state === 'hidden') transform = `translate(0, 150vh)`;
           return { position: 'absolute', top: 'auto', left: 'auto', width: '100%', height: '100%', transform, zIndex, transition: 'all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)', cursor: state === 'spread' ? 'pointer' : 'default' };
