@@ -18,13 +18,8 @@
       .transform-style-3d { transform-style: preserve-3d; }
       .backface-hidden { backface-visibility: hidden; }
       .rotate-y-180 { transform: rotateY(180deg); }
-      
-      /* V9修正：改为 justify-content: center，强制垂直居中 */
-      .main-layout { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; position: relative; }
-      
-      /* 卡牌容器 */
+      .main-layout { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 5vh; gap: 1.5rem; }
       .card-stage { position: relative; width: 80vw; max-width: 260px; aspect-ratio: 3/4.5; z-index: 10; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-      
       @keyframes float { 0%, 100% { transform: translateY(0px) rotate(5deg); } 50% { transform: translateY(-8px) rotate(-5deg); } }
       .fairy-fly { animation: float 3s ease-in-out infinite; }
     </style>
@@ -40,7 +35,7 @@
       // 👇👇👇 记得在这里填入你的 Key (保留双引号) 👇👇👇
       const YOUR_API_KEY = "AIzaSyBAvDfnYtzXmeeycna88DN8YRIHBWcP_4Q";
 
-      // V8双行文案
+      // 🌈 V8修改：全新的双行文案结构
       const COLOR_MEANINGS = {
           "bg-pink-400": ["Wooo！你抽到了粉色欸！代表【桃花与人缘】", "今天的给人家是 温柔 的感觉 💖"],
           "bg-purple-400": ["Wooo！你抽到了紫色欸！代表【直觉与灵感】", "今天的给人家是 神秘 的感觉 🔮"],
@@ -51,7 +46,7 @@
 
       const Icons = {
         Cloud: () => <svg width="48" height="48" viewBox="0 0 24 24" fill="white"><path d="M18 10C18 6.68629 15.3137 4 12 4C8.68629 4 6 6.68629 6 10C3.79086 10 2 11.7909 2 14C2 16.2091 3.79086 18 6 18H18C20.2091 18 22 16.2091 22 14C22 11.7909 20.2091 10 18 10Z" /></svg>,
-        Sparkles: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 3v4"/><path d="M3 5h4"/><path d="M3 9h4"/></svg>,
+        Sparkles: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 3v4"/><path d="M3 5h4"/><path d="M3 9h4"/></svg>,
         Play: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
         Rotate: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       };
@@ -144,6 +139,7 @@
                 </button>
             </div>
 
+            {/* V8修改：支持双行文案显示，增加间距和样式区分 */}
             <div className={`transition-all duration-700 flex flex-col items-center z-20 ${deckState === 'revealed' ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'} flex-shrink-0 min-h-[6rem] justify-end`}>
                  {selectedColorTheme && COLOR_MEANINGS[selectedColorTheme] && (
                    <div className="bg-white/20 backdrop-blur-md px-6 py-4 rounded-2xl text-white font-bold border-2 border-white/40 shadow-xl text-center animate-in fade-in zoom-in duration-500 leading-relaxed flex flex-col gap-1">
