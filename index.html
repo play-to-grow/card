@@ -19,7 +19,7 @@
       .backface-hidden { backface-visibility: hidden; }
       .rotate-y-180 { transform: rotateY(180deg); }
       
-      /* V8布局：从上往下排，留出呼吸感 */
+      /* ✅ 严守 V8 布局：从上往下排，不做任何改动 */
       .main-layout { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 5vh; gap: 1.5rem; }
       
       /* 卡牌容器 */
@@ -56,7 +56,7 @@
         Rotate: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       };
 
-      /// 📝 50条精选文案库 (如果API不工作，自动从这里抽)
+     /// 📝 50条精选文案库 (如果API不工作，自动从这里抽)
       const STATIC_CARDS = [
         { title: "拒绝内耗", wisdom: "停止批判自己，你已经做得很好了。", action: "深呼吸三次，说“我放过自己”" },
         { title: "允许发生", wisdom: "允许一切如其所是，然后穿过它。", action: "对一件烦心事耸耸肩 然后去解决" },
@@ -77,13 +77,13 @@
         { title: "专注当下", wisdom: "过去回不去，未来还没来，只有现在。", action: "认真感受喝水的温度" },
         { title: "赞美自己", wisdom: "别吝啬对自己的夸奖。", action: "写下自己的3个优点" },
         { title: "慢慢来", wisdom: "每朵花都有自己的花期，别急。", action: "跟着自己的节奏成长" },
-        { title: "保持距离", wisdom: "距离产生美，也产生安全感。", action: "做一件你最想做的事吧 " },
+        { title: "保持距离", wisdom: "距离产生美，让彼此关系更舒服。", action: "做一件你最想做的事吧 " },
         { title: "清理缓存", wisdom: "大脑也需要重启和清理。", action: "闭目养神10分钟" },
         { title: "阅读时光", wisdom: "书中自有黄金屋，去充充电。", action: "阅读5页书" },
         { title: "整理房间", wisdom: "环境整洁，心情也会变亮。", action: "整理桌面或衣柜" },
         { title: "联系老友", wisdom: "好的关系需要用心经营。", action: "可以来一场约会或者深度聊天" },
         { title: "记录美好", wisdom: "生活不缺少美，缺少发现。", action: "拍一张好看的天空" },
-        { title: "享受独处", wisdom: "独处是最好的增值期。", action: "一个人去散步" },
+        { title: "享受独处", wisdom: "独处是最好的增值期。", action: "做一件想做的事" },
         { title: "早睡早起", wisdom: "把熬夜的时间用来睡觉。", action: "定一个早起的闹钟" },
         { title: "减少抱怨", wisdom: "抱怨不如改变，改变不如接受。", action: "把抱怨换成“我要解决它”" },
         { title: "保持微笑", wisdom: "爱笑的女孩运气不会太差。", action: "对陌生人或店员微笑" },
@@ -91,7 +91,7 @@
         { title: "勇敢说不", wisdom: "你的善良，必须有点锋芒。", action: "温和而坚定地拒绝一次" },
         { title: "寻找灵感", wisdom: "灵感藏在生活的缝隙里。", action: "听一首没听过的歌" },
         { title: "亲近自然", wisdom: "大自然是最好的疗愈师。", action: "去公园走走或摸摸树叶" },
-        { title: "制定计划", wisdom: "没有计划的目标只是梦想。", action: "列出明天的3个To-Do" },
+        { title: "制定计划", wisdom: "没有计划的目标只是梦想。", action: "列出未来1个月的3个目标" },
         { title: "感恩生活", wisdom: "感恩让拥有的变更多。", action: "说一声谢谢" },
         { title: "学习新技", wisdom: "技多不压身，去解锁新技能。", action: "看一个教学视频或者去体验" },
         { title: "控制情绪", wisdom: "做情绪的主人，而不是奴隶。", action: "深呼吸，数到10再说话" },
@@ -101,10 +101,10 @@
         { title: "多喝水", wisdom: "水是生命之源，别让自己枯萎。", action: "不要等到口渴才喝水" },
         { title: "晒晒太阳", wisdom: "万物生长靠太阳，你也一样。", action: "感受阳光带来的温暖" },
         { title: "听从内心", wisdom: "别让外界的声音淹没你。", action: "静坐 好好听听自己内心" },
-        { title: "接受落差", wisdom: "人生起起伏伏，都是风景。", action: "告诉自己“没关系 就去玩吧”" },
+        { title: "接受落差", wisdom: "人生起起伏伏，都是风景。", action: "告诉自己“没关系 就去体验吧”" },
         { title: "保持神秘", wisdom: "不必把所有底牌都亮出来。", action: "沉默可能会帮到你" },
         { title: "适度依赖", wisdom: "偶尔示弱也是一种智慧。", action: "请人帮一个小忙" },
-        { title: "穿搭自由", wisdom: "穿什么，是为了取悦自己。", action: "明天穿一件喜欢的衣服" },
+        { title: "穿搭自由", wisdom: "穿什么，是为了取悦自己。", action: "每天为自己用心打扮一番" },
         { title: "适当休息", wisdom: "休息是让自己充好电，再出发。", action: "趁周末来场跟自己的约会" },
         { title: "投资自己", wisdom: "你是自己最好的资产。", action: "为学习买单或穿搭" },
         { title: "活在当下", wisdom: "这一刻，就是最好的时刻。", action: "好好感受这张牌给你的感觉" }
@@ -126,14 +126,13 @@
         return (
           <div style={style} className="perspective-1000" onClick={() => state === 'spread' && onClick(id)}>
             <div className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
-              <div className={`absolute w-full h-full backface-hidden rounded-[24px] border-4 border-white shadow-xl ${theme.bg} flex flex-col items-center justify-center relative overflow-hidden`}>
-                {/* ✅ V11修改：仙女移到卡牌右上角，不再遮挡文字 */}
-                <span className="absolute top-4 right-4 text-4xl filter drop-shadow-lg z-10 fairy-fly">🧚‍♀️</span>
-                
+              <div className={`absolute w-full h-full backface-hidden rounded-[24px] border-4 border-white shadow-xl ${theme.bg} flex flex-col items-center justify-center`}>
                 <div className="relative w-24 h-24 mb-5 flex items-center justify-center">
+                     {/* ✅ V12微调：只改这里！把 -right-3 改成了 -right-10，让仙女往右移，不挡字 */}
+                     <span className="absolute -top-6 -right-10 text-4xl filter drop-shadow-lg z-10 fairy-fly">🧚‍♀️</span>
                     <div className="w-full h-full bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white shadow-inner"><Icons.Cloud /></div>
                 </div>
-                <div className="pop-font text-white text-3xl font-bold tracking-widest drop-shadow-md z-20">GROWTH</div>
+                <div className="pop-font text-white text-3xl font-bold tracking-widest drop-shadow-md">GROWTH</div>
               </div>
               <div className="absolute w-full h-full backface-hidden rotate-y-180 rounded-[24px] bg-white border-4 border-white shadow-xl flex flex-col overflow-hidden">
                 <div className={`flex-1 ${theme.bg} p-6 flex flex-col items-center justify-center text-center relative`}>
